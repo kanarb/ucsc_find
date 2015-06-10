@@ -1,0 +1,9 @@
+name= UCSC Find Module
+description = "This module creates a search widget block for the UCSC Library Web site."
+package = UCSC Library
+version = 7.x.1.0
+core = 7.x
+files[] = ucsc_find.module,
+files[] = ucsc_find.js,
+files[] = ucsc_find.css,
+dependencies[] = block

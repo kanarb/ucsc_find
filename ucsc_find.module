@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Create a search block
+ */
+
+/**
+ * Implements hook_block_info().
+ */
+function ucsc_find_block_info() {
+  $blocks['ucsc_find'] = array(
+    'info' => t('UCSC Search Widget'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function ucsc_find_block_view() {
+
+/**
+ * Calling the js file
+ */
+
+drupal_add_js(drupal_get_path('module', 'ucsc_find') . '/ucsc_find.js');
+
+/**
+ * Calling the css file
+ */
+
+drupal_add_css(drupal_get_path('module', 'ucsc_find') . '/ucsc_find.css');
+
+  $content = <<<WIDGETMARKUP
+<div id="tabswitch"><!-- begin tabs -->
+	<ul class="primary">
+		<li class="catalogstab"><a>Catalogs</a></li>
+		<li class="reservestab"><a>Reserves</a></li>
+	</ul>
+	<!-- end tabs --><!-- begin catalogs tab -->
+	<div class="tab-container catalogstab callout-full"><!-- begin catalogs switch -->
+		<div id="db"><select id="selectdb" name="selectdb" title="selectdb"><option id="cruzcat" selected="selected" value="cruzcat">Cruzcat</option><option id="melvyl" value="melvyl">Melvyl</option><option id="worldcat" value="worldcat">Libraries Worldwide</option></select></div>
+		<!-- end catalogs switch --><!-- begin classic cruzcat content -->
+		<div id="form-cruzcat">
+			<form action="http://cruzcat.ucsc.edu/search/X" id="cruzcatform" method="get" name="cruzcatform"><input class="standardtext" id="cruzcattextbox" name="SEARCH" size="12" title="cruzcattextbox" value="" type="text"> <select id="searchclassic" name="searchby" title="searchby"><option id="X" name="searchby" selected="selected" value="1">Keyword</option><option id="a" name="searchby" value="2">Author</option><option id="t" name="searchby" value="3">Title</option><option id="d" name="searchby" value="4">Subject</option><option id="c" name="searchby" value="5">Call #</option><option id="g" name="searchby" value="6">Gov Doc #</option><option id="m" name="searchby" value="7">Other Call #</option><option id="i" name="searchby" value="8">ISBN/ISSN</option></select><br>
+				<input id="classic-submit" name="submit" value="Search" type="submit">&nbsp;</form>
+			<br>
+			<a href="http://cruzcat.ucsc.edu/search/X">Advanced Search</a></div>
+		<!-- end classic cruzcat content --><!-- begin cruzcat encore content -->
+		<div id="form-encore" style="display:none;">
+			<form action="http://libportal.ucsc.edu/iii/encore/Home,$Search.form.sdirect" id="form" method="get" name="form"><input name="formids" value="target" type="hidden"> <input name="lang" value="eng" type="hidden"> <input name="suite" value="def" type="hidden"> <input name="reservedids" value="lang,suite" type="hidden"> <input name="submitmode" value="" type="hidden"> <input name="submitname" value="" type="hidden"> <input id="target" name="target" size="20" title="target" value="" type="text"> <input value="Search" type="submit">&nbsp;</form>
+			<br>
+			<a href="http://libportal.ucsc.edu/iii/encore/home?lang=eng&amp;suite=def&amp;advancedSearch=true&amp;searchString=">Advanced Search</a></div>
+		<!-- end cruzcat encore content --><!-- begin melvyl content -->
+		<div id="form-melvyl" style="display:none;">
+			<form action="http://ucsc.worldcat.org/search" method="get" name="search"><input name="qt" value="advanced" type="hidden"> <input id="scope" name="scope" value="1" type="hidden"> <input id="search1" name="search1" value="idx_kw" type="hidden"> <select id="searchtype" name="limit-5-mt" title="searchtype"><option id="book" name="limit-5-mt" selected="selected" value="dt:bks">Books</option><option id="journal" name="limit-5-mt" value="dt:art">Articles</option><option id="everything" name="limit-5-mt" value="">Everything</option></select> <input class="standardtext" id="search1input" name="i1" size="14" title="search1input" type="text"><input id="melvyl-submit" name="submit" value="Search" type="submit">&nbsp;</form>
+			<br>
+			<a href="http://ucsc.worldcat.org/search?qt=wc_org_ucsc&amp;scope=2">Melvyl Home</a></div>
+		<!-- end melvyl content --><!-- begin worldcat content -->
+		<div id="form-worldcat" style="display:none;">
+			<form action="http://ucsc.worldcat.org/search" method="get" name="search"><input name="qt" value="advanced" type="hidden"> <input id="wcscope" name="scope" value="0" type="hidden"> <input id="wcsearch1" name="search1" value="idx_kw" type="hidden"> <select id="searchtype" name="limit-5-mt" title="searchtype"><option id="wcbook" name="limit-5-mt" selected="selected" value="dt:bks">Books</option><option id="wcjournal" name="limit-5-mt" value="dt:art">Articles</option><option id="wceverything" name="limit-5-mt" value="">Everything</option></select> <input class="standardtext" id="wcsearch1input" name="i1" size="14" tile="searchterm" type="text"><input id="melvyl-submit" name="submit" value="Search" type="submit">&nbsp;</form>
+			<br>
+			<a href="http://ucsc.worldcat.org/search?qt=wc_org_ucsc&amp;scope=3">Worldcat Home</a></div>
+		<!-- end worldcat content --></div>
+	<!-- end catalogs tab --><!-- begin reserves tab -->
+	<div class="tab-container reservestab callout-full"><!-- begin reserves content -->
+		<div id="reserves-cruzcat">
+			<form action="http://cruzcat.ucsc.edu/search/r" id="reservesform" method="get" name="reservesform"><input class="standardtext" id="restextbox" name="SEARCH" size="12" title="restextbox" value="" type="text"> <select id="searchres" name="searchby" title="searchby"><option id="r" name="searchby" selected="selected" value="4">Course</option><option id="p" name="searchby" value="5">Instructor</option></select><br>
+				<input id="reserves-submit" name="submit" value="Search" type="submit">&nbsp;</form>
+		</div>
+		<!-- end reserves content --></div>
+	<!-- end reserves tab --></div>
+<div id="threecolumnfooter">
+	<p class="askalibrarian"><a class="iconimg" href="/ask-a-librarian"><img alt="ask a librarian logo" src="http://library.ucsc.edu/sites/default/files/external/images/ask-icon_0.png"></a><a class="icontext" href="/ask-a-librarian">Ask a Librarian</a></p>
+</div>
+WIDGETMARKUP;
+  $block = array(
+    'subject' => t('Find Books and More'),
+    'content' => $content,
+  );
+  return $block;
+
+}

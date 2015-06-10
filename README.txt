@@ -1,0 +1,1 @@
+This module creates a block which allows users to search multiple catalogs through a single interface. Direct questions to Bryn Kanar (kanarb@ucsc.edu).
